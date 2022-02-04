@@ -143,3 +143,5 @@ f.write(acceptsString)
 f.write(transitionString[:-2])
 
 f.close()
+
+print('complete')
