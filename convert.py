@@ -1,5 +1,6 @@
 import sys
 
+
 # collect nfa inputs
 if len(sys.argv) == 2:
     if sys.argv[1].split('.')[-1] == 'nfa':
@@ -78,7 +79,6 @@ if len(sys.argv) == 2:
 else:
     exit("too many arguments")
 
-print()
 
 # initialize translation supports
 stateCounter = 1
