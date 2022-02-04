@@ -7,12 +7,12 @@ You may provide an input NFA in one of two ways.
 
 1. Define the NFA via a CLI
    - When invoking the program, provide a name for the output file
-      - ```>/py convert.py <outputName>```
+      - ```> python convert.py <outputName>```
    - After walking you through the NFA definition, it will create a DFA in the form of <outputName>.fa
 
 2. Define the NFA via an input file
    - When invoking the program, provide an input file of type .nfa
-      - ```>/py convert.py <inputName>.nfa```
+      - ```> python convert.py <inputName>.nfa```
    - This will create a DFA in the form of <inputName>.fa
    
 ## Formatting a .nfa file
