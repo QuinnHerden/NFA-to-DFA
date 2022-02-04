@@ -109,9 +109,10 @@ while (nfaQueue):
         nextStates = set()
         
         for state in currentNode.nfaStates:
-
-            for i in transitionTable[state][symbol]:
-                nextStates.add(i)
+            
+            if symbol in  transitionTable[state].keys():
+                for i in transitionTable[state][symbol]:
+                    nextStates.add(i)
 
         nextStates = list(nextStates)
         nextStates.sort()
