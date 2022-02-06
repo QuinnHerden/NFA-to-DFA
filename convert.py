@@ -1,4 +1,5 @@
 import sys
+import re
 from tracemalloc import start
 
 print('''\n
@@ -76,7 +77,7 @@ elif len(sys.argv) == 2:
 
                 #if state is not in table, add it.
                 if state1 not in transitionTable.keys():
-                    transitionTable[statement[0]] = {}
+                    transitionTable[state1] = {}
                 for edge in states:
                     if edge not in transitionTable.keys():
                         transitionTable[edge] = {}
@@ -102,7 +103,7 @@ else:
 # initialize translation supports
 stateCounter = 1
 nfaQueue = []
-nfaProcessed = []
+nfaProcessed = [] #use this
 converted_set = {}
 transitionString = ""
 class node:
@@ -136,22 +137,33 @@ while (nfaQueue):
         nextStates = list(nextStates)
         nextStates.sort()
     
-        if (str(nextStates) not in str(converted_set.keys())):
+        if (str(nextStates) not in str(converted_set.keys()) and nextStates not in nfaProcessed):
             #print("CONVERSION SET: " + str(converted_set))
             #print("CONVERSION SET KEYS: " + str(converted_set.keys()))
             #print("NEXT NODES SET: " + str(nextStates) + "\n")
             tempNode = node(nextStates)
             nfaQueue.append(tempNode)
+            nfaProcessed.append(tempNode)
             converted_set[str(tempNode.nfaStates)] = tempNode.dfaState
         transitionString += str(currentNode.dfaState) + " " + str(symbol) + " " + str(converted_set[str(nextStates)]) + '\n'    
     transitionString += '\n'
-print("\nMachine output: \n" + transitionString)
+    
+#check iterated nodes to determine if it contains an accepted set
+#TODO add 'contains_accepted' as node attribute so we can skip this other loop
+dfaAccepts = []
+acceptStrings = re.findall('[0-9]+', str(nfaAccepts))
+for group in nfaProcessed:
+   for valid in acceptStrings:
+       if valid in re.findall('[0-9]+', str(group.nfaStates)):
+           dfaAccepts.append(group.dfaState)
+dfaAccepts.sort()
 
+print("\nMachine output: \n" + transitionString)
 # write start state, accept states, and transitions
 f = open(outputFilename, "w")
 f.write(str(converted_set[str(nfaStarts)]))
 acceptsString = '\n{ '
-for state in nfaAccepts:
+for state in dfaAccepts:
     acceptsString = acceptsString + str(state) + " "
 acceptsString = acceptsString + "}\n\n"
 f.write(acceptsString)
