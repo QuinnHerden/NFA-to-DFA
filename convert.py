@@ -17,29 +17,33 @@ print('''\n
 ''')
 
 # collect nfa inputs
-if sys.argv[1] == '-h' or sys.argv[1] == '--help':
-    #help flag
-    exit("Usage:\n\t python3 convert.py <Filename>.nfa: Read from .nfa file\n\t python3 convert.py: Custom input\n")
-elif len(sys.argv) == 1:
-    #CLI Custom Input
-    outputFilename = sys.argv[0] + '.fa'
-    alphabet = input('enter alphabet, space separated\n').split()
-    alphabet.sort()
-    nfaStates = input('enter states, space separated\n').split()
-    nfaStates.sort()
-    nfaStarts = input('enter start states, space separated\n').split()
-    nfaStarts.sort()
-    nfaAccepts = input('enter accept states, space separated\n').split()
-    nfaAccepts.sort()
-    transitionTable = {}
-    print('provide a space separated list of next state, given current state and input symbol')
-    for state in nfaStates:
-        transitionTable[state] = {}
-        for symbol in alphabet:
-            transitionTable[state][symbol] = input('%s %s -> ' % (state, symbol)).split()
-elif len(sys.argv) == 2:
+if len(sys.argv) == 2:
+    inpCheck = sys.argv[1].split('.')
+    
+    if sys.argv[1] == '-h' or sys.argv[1] == '--help':
+        #help flag
+        exit("Usage:\n\t python3 convert.py <Filename>.nfa: Read from .nfa file\n\t python3 convert.py: Custom input\n")
+
+    elif len(inpCheck) == 1:
+        #CLI Custom Input
+        outputFilename = sys.argv[1] + '.fa'
+        alphabet = input('enter alphabet, space separated\n').split()
+        alphabet.sort()
+        nfaStates = input('enter states, space separated\n').split()
+        nfaStates.sort()
+        nfaStarts = input('enter start states, space separated\n').split()
+        nfaStarts.sort()
+        nfaAccepts = input('enter accept states, space separated\n').split()
+        nfaAccepts.sort()
+        transitionTable = {}
+        print('provide a space separated list of next state, given current state and input symbol')
+        for state in nfaStates:
+            transitionTable[state] = {}
+            for symbol in alphabet:
+                transitionTable[state][symbol] = input('%s %s -> ' % (state, symbol)).split()
+
+    elif inpCheck[-1] == 'nfa':
      # verify input file specified and continue
-    if sys.argv[1].split('.')[-1] == 'nfa':
         outputFilename = sys.argv[1].split('.')[0] + '.fa'
         infile = open(sys.argv[1], 'r')
         source = infile.read().splitlines()
@@ -96,9 +100,8 @@ elif len(sys.argv) == 2:
         print("Transition Table: " + str(transitionTable))
     else:
         exit('invoke this program with a .nfa file, or an output name')
-
 else:
-    exit("too many arguments")
+    exit("invoke with '-h' for help")
 
 # initialize translation supports
 stateCounter = 1
