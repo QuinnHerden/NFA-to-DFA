@@ -156,6 +156,7 @@ for group in nfaProcessed:
    for valid in acceptStrings:
        if valid in re.findall('[0-9]+', str(group.nfaStates)):
            dfaAccepts.append(group.dfaState)
+dfaAccepts = list(set(dfaAccepts))
 dfaAccepts.sort()
 
 print("\nMachine output: \n" + transitionString + "\n")
