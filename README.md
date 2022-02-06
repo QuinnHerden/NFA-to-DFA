@@ -18,24 +18,24 @@ You may provide an input NFA in one of two ways.
 ## Formatting a .nfa file
 
 The input .nfa should be formatted as follows:
-1. The first line holds a set of states the NFA could initially be on, enclosed in curly braces, delimted by commas
-2. The second line holds a set of states that the NFA will accept, enclosed in curly braces, delimted by commas
+1. The first line holds a set of one or more states the NFA could initially be on, delimted by spaces.
+2. The second line holds a set of zero or more states that the NFA will accept, delimited by spaces.
 3. The following lines will define the state transitions, as a tuple, for each state you wish to define.
     - The first symbol is the current state.
     - The second symbol will be the transition symbol.
-    - The following symbol (or symbols, delimted by space) will define the set of all states the automata will transition into.
+    - The following symbol (or symbols, delimted by spaces) will define the set of all states the automata will transition into.
 
 ###### example.nfa
 ```
-{1}
-{1, 3}
+1 2
+3
 
-1 a 2 3
-1 b 1
+1 a 1
+1 b 2
 
-2 a 3
-2 b 1
+2 a 2 3
+2 b 2
 
 3 a 3
-3 b 3
+3 b 2 3
 ```

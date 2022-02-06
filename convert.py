@@ -49,15 +49,11 @@ if len(sys.argv) == 2:
         source = infile.read().splitlines()
 
         #parse starting node
-        nfaStarts = list(set(source[0].split(', ')))
-        nfaStarts[0] = nfaStarts[0][1:]
-        nfaStarts[-1] = nfaStarts[-1][:-1]
+        nfaStarts = list(set(source[0].split()))
         print("Starting node: " + str(nfaStarts))
 
         #parse accept node(s)
-        nfaAccepts = list(set(source[1].split(', ')))
-        nfaAccepts[0] = nfaAccepts[0][1:]
-        nfaAccepts[-1] = nfaAccepts[-1][:-1]
+        nfaAccepts = list(set(source[1].split()))
         nfaAccepts.sort()
         print("Accept node(s): " + str(nfaAccepts))
 
@@ -150,7 +146,8 @@ while (nfaQueue):
             converted_set[str(tempNode.nfaStates)] = tempNode.dfaState
         transitionString += str(currentNode.dfaState) + " " + str(symbol) + " " + str(converted_set[str(nextStates)]) + '\n'    
     transitionString += '\n'
-    
+transitionString = transitionString[:-2]
+
 #check iterated nodes to determine if it contains an accepted set
 #TODO add 'contains_accepted' as node attribute so we can skip this other loop
 dfaAccepts = []
@@ -161,14 +158,14 @@ for group in nfaProcessed:
            dfaAccepts.append(group.dfaState)
 dfaAccepts.sort()
 
-print("\nMachine output: \n" + transitionString)
+print("\nMachine output: \n" + transitionString + "\n")
 # write start state, accept states, and transitions
 f = open(outputFilename, "w")
 f.write(str(converted_set[str(nfaStarts)]))
-acceptsString = '\n{ '
+acceptsString = "\n"
 for state in dfaAccepts:
-    acceptsString = acceptsString + str(state) + " "
-acceptsString = acceptsString + "}\n\n"
+    acceptsString = acceptsString + str(state) + ", "
+acceptsString = "\n{" + acceptsString[1:-2] + "}\n\n"
 f.write(acceptsString)
 f.write(transitionString)
 f.close()
